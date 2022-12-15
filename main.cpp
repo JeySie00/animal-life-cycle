@@ -62,7 +62,56 @@ int main(int argc, char* argv[]){
     animal_2.genders="Female";
     individuals.push_back(animal_2);
 
+    for (int i=0;i<number_of_years;i++)
+    { 
+        year++;
+        cout<<"Year: " << year <<endl;
+
+        //Константы
+        int const_born = 50; //вероятность воспроизведения потомства (%)
+        int const_eat = 1; //потребление пищи за год
+        int const_die = 50; //вероятность смерти (%)
+        vector<string>die;
+        vector<string>born;
+
+        srand(time(NULL));
+        
+        //Вымирание 
+        for (int i = 0; i < individuals.size(); i++)
+        {   
+            if (const_die>50)
+            { 
+            if (individuals[i].age >=10) {
+            die.push_back(individuals[i].name); 
+            individuals.erase(individuals.begin() + i);
+            
+            }
+
+            }
+            if (const_die<50)
+            {
+                if (individuals[i].age>=15){ 
+                individuals.erase(individuals.begin() + i);
+                die.push_back(individuals[i].name); }
+            }
+            int randi=rand()%2;
+
+            if (const_die=50)
+            {
+                if ((individuals[i].age>=10)&(individuals[i].age<=15))
+                {
+                    if (randi=0) { die.push_back(individuals[i].name);
+                    individuals.erase(individuals.begin() + i);}
+
+                }
+                if (individuals[i].age>15) {die.push_back(individuals[i].name);
+                individuals.erase(individuals.begin() + i);}
+            }
+            
+        }
     write_individuals(file_name, individuals, year);
+    }
+    
 
     return 0;
 }
