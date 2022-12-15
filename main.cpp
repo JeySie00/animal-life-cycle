@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 struct individual {
     string name;
     int age;
@@ -20,6 +19,20 @@ string gender_rand()
     int s = rand() % 2;
     if (s == 1) return "Male";
     else return "Female";
+}
+
+//Запись данных об особях в текстовый файл
+void write_individuals(string file_name, vector <individual> individuals, int year) {
+    ofstream file(file_name, ofstream::app);
+    int size = individuals.size();
+    file << "____________________" << endl;
+    file << "Year:" << year << endl << endl;
+    for (int i = 0; i < size; i++){
+        file << "Name: " << individuals[i].name << endl;
+        file << "Age: " << individuals[i].age << endl;
+        file << "Gender: " << individuals[i].genders << endl << endl;
+    }
+    file.close();
 }
 
 int main(int argc, char* argv[]){
@@ -48,6 +61,8 @@ int main(int argc, char* argv[]){
     animal_2.age =1;
     animal_2.genders="Female";
     individuals.push_back(animal_2);
+
+    write_individuals(file_name, individuals, year);
 
     return 0;
 }
