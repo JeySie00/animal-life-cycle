@@ -109,7 +109,75 @@ int main(int argc, char* argv[]){
             }
             
         }
-    write_individuals(file_name, individuals, year);
+
+        //Кормление
+        int sum_food=number_of_food + inventory_renewal;
+        cout<<"Amount of food: "<<sum_food<<endl;
+        int sum_food_for=0;
+        for (int i = 0; i < individuals.size(); i++)
+        {  
+            if (individuals[i].age>=1) 
+                sum_food_for+=const_eat;
+        }
+        sum_food-=const_eat*individuals.size();
+        number_of_food=sum_food;
+        cout<<"Needed for feeding: "<<sum_food_for<<endl;
+        while (sum_food_for>number_of_food)
+        {
+            sum_food_for -= const_eat;
+            int pop=rand()%individuals.size();
+            die.push_back(individuals[pop].name);
+            individuals.erase(individuals.begin() + pop);
+        }
+        cout<<"Leftover food: "<<sum_food<<endl;
+
+        //Скрещивание и рождение
+        int male_count = 0, female_count = 0;
+        for (int i = 0; i < individuals.size(); i++)
+        {   
+            if (individuals[i].genders == string("Male")) {
+                if ((individuals[i].age>=1) & (individuals[i].age<=13)) {
+                    male_count++;
+                }
+            }
+            if (individuals[i].genders == string("Female")) {
+                if ((individuals[i].age>=1) & (individuals[i].age<=13)) {
+                    female_count++;
+                }
+            }
+        }
+        cout << "M: " << male_count << endl;
+        cout << "F: " << female_count << endl;
+        int born_count = 0;
+        if (max(male_count, female_count) != 0) {
+            born_count = min(male_count, female_count);
+        }
+    
+        while (born_count)
+        {
+            //Создается малышок
+            string slovo = "animal_"+to_string(count_n);
+            individual new_animal;
+            new_animal.name= slovo;
+            new_animal.age= 0;
+            new_animal.genders=gender_rand();
+            individuals.push_back(new_animal);
+            born.push_back(new_animal.name);
+            born_count--;
+            count_n++;
+            cout << "Born: " << new_animal.name << endl;
+        }
+        for (int i=0;i<die.size();i++)
+        {
+            cout<<"Die: " << die[i] <<endl;
+        }
+        
+        //Старение
+        for (int i = 0; i < individuals.size(); i++){
+            individuals[i].age++;
+        }
+        cout << endl;
+        write_individuals(file_name, individuals, year);
     }
     
 
